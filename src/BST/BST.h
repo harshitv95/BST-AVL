@@ -9,7 +9,7 @@ class BST
  public:
      /***** Function Members *****/
     BST();
-    bool empty() const;
+    bool empty() const;j
     bool search(const int & item) const;
     void insert(const int & item);
 
@@ -22,8 +22,8 @@ class BST
     /***** Others *****/
     typedef enum {PRE_ORDER, IN_ORDER, POST_ORDER} traversal_order;
     typedef enum {LEAF_NODE, ONE_CHILD, TWO_CHILDREN} delete_mode;
-  
- private:
+
+ protected:
      /***** Node class *****/
     class BinNode
     {
@@ -52,10 +52,11 @@ class BST
     /***** Private Function Members *****/
     int nodeCount(BinNode * node) const;
     void traverse(BinNode *node, traversal_order order) const;
-    BinNode *searchNode(BinNode *startNode, int data, BinNode *parentNode);
+    BinNode *searchNode(BinNode *startNode, int data, BinNode *&parentNode);
     void deleteNode(BinNode *node, BinNode *parentNode, delete_mode mode);
-    BinNode *smallest(BinNode *rootNode, BinNode *parentNode);
-    BinNode *largest(BinNode *rootNode, BinNode * parentNode);
+    BinNode *smallest(BinNode *rootNode, BinNode *& parentNode, int &status);
+    BinNode *largest(BinNode *rootNode, BinNode *& parentNode, int &status);
+    virtual void postInsert(BinNode *node, BinNode *parentNode);
 
 }; // end of class declaration
 
