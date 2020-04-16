@@ -6,35 +6,41 @@ using namespace std;
 
 #include "AVL.h"
 
-void actions(BST*, int);
-void traverse(BST*, int);
+void actions(AVL*, int);
+void traverse(AVL*, int);
 
-enum mainOptions { INSERT=1, SEARCH, TRAVERSE, DELETE, EXIT };
-enum traversalMethods { PREORDER=1, INORDER, POSTORDER };
+enum mainOptions { INSERT=1, SEARCH, TRAVERSE, DELETE, COUNT, EXIT };
+enum traversalMethods { PREORDER=1, INORDER, POSTORDER, BACK_FROM_TRAVERSAL };
 
 int main()
 {
-   // Testing Constructor and empty()
-   AVL intAVL;            // test the class constructor
-   cout << "Constructing empty AVL Tree\n";
-   cout << "AVL Tree " << (intAVL.empty() ? "is" : "is not") << " empty\n";
+    // Testing Constructor and empty()
+    AVL intAVL;            // test the class constructor
+    cout << "Constructing empty BST\n";
+    cout << "BST " << (intAVL.empty() ? "is" : "is not") << " empty\n";
 
-   int number;
-   while(true) {
-       cout << "\n***********************************" <<endl;
-       cout << "Select Action:" << endl << "1. Insert" << endl << "2. Search" << endl << "3. Traverse" << endl << "4. Delete" << endl << "5. Exit" << endl;
-       cin >> number;
-       if (number < 1 || number > 5) {
-           cout << "Select a valid option between 1 and 5" << endl;
-           continue;
-       } else if (number == EXIT)
-           exit(0);
-       actions(&intAVL, number);
-   }
+    int number;
+    while(true) {
+        cout << "\n***********************************" <<endl;
+        cout << "Select Action:" << endl
+             << "1. Insert" << endl
+             << "2. Search" << endl
+             << "3. Traverse" << endl
+             << "4. Delete" << endl
+             << "5. Size of tree (Count of numbers in the tree)" << endl
+             << "6. Exit" << endl;
+        cin >> number;
+        if (number < 1 || number > EXIT) {
+            cout << "Select a valid option between 1 and " << EXIT << endl;
+            continue;
+        } else if (number == EXIT)
+            exit(0);
+        actions(&intAVL, number);
+    }
 
 }
 
-void actions(BST *intAVL, int option) {
+void actions(AVL *intAVL, int option) {
     switch (option) {
         case INSERT: {
             int number;
@@ -67,15 +73,15 @@ void actions(BST *intAVL, int option) {
             int number = 0;
             // Testing tree traversal (inOrder, preOrder, postOrder)
             cout << "\n\nNow testing tree traversal."
-                    "\nSelect a traversal method:\n";
+                    "\nSelect a traversal method:";
             while (true) {
-                cout << "1. PreOrder\n2. InOrder\n3. PostOrder\n4. Back" << endl;
+                cout << "\n1. PreOrder\n2. InOrder\n3. PostOrder\n4. Back" << endl;
                 cin >> number;
-                if (number > 4 || number < 1) {
-                    cout << "Select a valid option between 1 and 3" << endl;
+                if (number > BACK_FROM_TRAVERSAL || number < 1) {
+                    cout << "Select a valid option between 1 and 4" << endl;
                     continue;
                 } else {
-                    if (number == 4) break;
+                    if (number == BACK_FROM_TRAVERSAL) break;
                     traverse(intAVL, number);
                 }
             }
@@ -86,7 +92,7 @@ void actions(BST *intAVL, int option) {
             // Testing delete number from tree
             cout << "\n\nNow testing delete.";
             while (true) {
-                cout << "\nEnter a number to delete (-999 to go back):\n";
+                cout << "\nEnter a number to delete (-999 to go back):";
                 cin >> number;
                 if (number == -999) break;
                 if (!intAVL->search(number)) {
@@ -98,10 +104,14 @@ void actions(BST *intAVL, int option) {
             }
             return;
         }
+        case COUNT:
+            cout << "\nSize of tree:" << endl;
+            cout << "There are [" << intAVL->nodeCount() << "] elements in the tree" << endl;
+            return;
     }
 }
 
-void traverse(BST *intAVL, int traversalMethod) {
+void traverse(AVL *intAVL, int traversalMethod) {
     switch (traversalMethod) {
         case PREORDER:
             intAVL->preOrder();

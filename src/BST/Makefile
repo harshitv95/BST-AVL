@@ -3,7 +3,7 @@ CFLAGS=
 DEPS = BST.h
 OBJ = treetester.o BST.o
 
-%.o: %.c $(DEPS)
+%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 bst: $(OBJ)

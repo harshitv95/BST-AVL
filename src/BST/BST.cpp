@@ -16,7 +16,7 @@ bool BST::empty() const
 
 bool BST::search(const int & item) const
 {
-   BinNode * locptr = myRoot;
+    BinNode * locptr = myRoot;
    bool found = false;
    while (!found && locptr != 0)
    {
@@ -33,8 +33,8 @@ bool BST::search(const int & item) const
 
 void BST::insert(const int & item)
 {
-   BinNode * locptr = myRoot;   // search pointer
-   BinNode * parent = 0;        // pointer to parent of current node
+    BinNode * locptr = myRoot;   // search pointer
+    BinNode * parent = 0;        // pointer to parent of current node
    bool found = false;     // indicates if item already in BST
    while (!found && locptr != 0)
    {
@@ -48,7 +48,7 @@ void BST::insert(const int & item)
    }
    if (!found)
    {                                 // construct node containing item
-      locptr = new BinNode(item);  
+      locptr = this->initNode(item);
       if (parent == 0) {              // empty tree
           myRoot = locptr;
           this->postInsert(myRoot, NULL);
@@ -88,6 +88,7 @@ void BST::postOrder() const {
 
 void BST::deleteNode(int value) {
     BinNode *searchNode, *parentNode;
+    parentNode = NULL;
     delete_mode mode = LEAF_NODE;
     searchNode = this->searchNode(this->myRoot, value, parentNode);
     if (searchNode->left && searchNode->right)
@@ -127,6 +128,10 @@ BST::BinNode *BST::searchNode(BST::BinNode *startNode, int data, BST::BinNode *&
     }
 }
 
+void BST::BinNode::print() {
+    cout << this->data << endl;
+}
+
 void BST::traverse(BST::BinNode *node, traversal_order order) const {
     if (node == NULL || node == 0)
         return;
@@ -135,19 +140,19 @@ void BST::traverse(BST::BinNode *node, traversal_order order) const {
     switch (order) {
         case PRE_ORDER:
 //            printf("%d", node->data);
-            cout << node->data << endl;
+            node->print();
             traverse(left, order);
             traverse(right, order);
             break;
         case IN_ORDER:
             traverse(left, order);
-            cout << node->data << endl;
+            node->print();
             traverse(right, order);
             break;
         case POST_ORDER:
             traverse(left, order);
             traverse(right, order);
-            cout << node->data << endl;
+            node->print();
             break;
     }
 }
@@ -192,9 +197,9 @@ void BST::deleteNode(BST::BinNode *node, BST::BinNode *parentNode, BST::delete_m
             BinNode *parentOfSmallestNode, *smallestNode;
             smallestNode = smallest(node->right, parentOfSmallestNode, status);
             if (parentOfSmallestNode != NULL && status == 1)
-                parentOfSmallestNode->left = NULL;
+                parentOfSmallestNode->left = smallestNode->right;
             else
-                node->right = NULL;
+                node->right = smallestNode->right;
 
             cout << "Found smallest : [" << smallestNode->data << "] with parent : [" << parentOfSmallestNode->data << "]";
 
@@ -214,6 +219,7 @@ void BST::deleteNode(BST::BinNode *node, BST::BinNode *parentNode, BST::delete_m
         }
     }
     delete node;
+    this->postDelete(parentNode);
 }
 
 BST::BinNode * BST::smallest(BinNode *rootNode, BinNode *& parentNode, int &status) {
@@ -230,4 +236,25 @@ BST::BinNode * BST::largest(BinNode *rootNode, BinNode *& parentNode, int &statu
     return largest(rootNode->right, parentNode, status);
 }
 
+BST::BinNode * BST::smallest(BinNode *rootNode) {
+    if (rootNode->left == NULL) return rootNode;
+    return smallest(rootNode->left);
+}
+
+BST::BinNode * BST::largest(BinNode *rootNode) {
+    if (rootNode->right == NULL) return rootNode;
+    return largest(rootNode->right);
+}
+
+
 void BST::postInsert(BST::BinNode *node, BST::BinNode *parentNode) {}
+
+void BST::postDelete(BST::BinNode *parentNode) {}
+
+BST::BinNode* BST::initNode() {
+    return new BinNode();
+}
+
+BST::BinNode* BST::initNode(int data) {
+    return new BinNode(data);
+}

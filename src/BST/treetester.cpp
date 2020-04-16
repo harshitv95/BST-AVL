@@ -92,7 +92,7 @@ void actions(BST *intBST, int option) {
             // Testing delete number from tree
             cout << "\n\nNow testing delete.";
             while (true) {
-                cout << "\nEnter a number to delete (-999 to go back):\n";
+                cout << "\nEnter a number to delete (-999 to go back):";
                 cin >> number;
                 if (number == -999) break;
                 if (!intBST->search(number)) {

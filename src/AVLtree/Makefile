@@ -1,13 +1,13 @@
-CC=g++ -g
-CFLAGS=
-DEPS = ../BST/BST.h AVL.h
+CC=g++
+CFLAGS=-g
+DEPS = AVL.h
 OBJ = treetester.o ../BST/BST.o AVL.o
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+%.o: %.cpp $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-bst: $(OBJ)
+avl: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 clean:
-	rm -f *.o bst
+	rm -f *.o avl
