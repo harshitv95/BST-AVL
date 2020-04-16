@@ -38,11 +38,12 @@ class AVL: public BST
     int calcBalance(AVLNode *node);
     BinNode* initNode();
     BinNode* initNode(int data);
+    AVLNode* findUnbalanced(AVLNode *rootNode);
 
  private:
     /***** Private Function Members *****/
     void postInsert(BinNode *node, BinNode *parentNode);
-    void postDelete(BinNode *parentNode);
+    void postDelete(int deletedData, BinNode *parentNode);
     void balance(AVLNode *node);
     void rotate(
             AVLNode *rotateNode, rotation_type rotationType

@@ -159,6 +159,7 @@ void BST::traverse(BST::BinNode *node, traversal_order order) const {
 
 void BST::deleteNode(BST::BinNode *node, BST::BinNode *parentNode, BST::delete_mode mode) {
     bool isRoot = (node == this->myRoot);
+    int data = node->data;
     if (isRoot)
         cout << "Deleting Root element : " << node->data << endl;
     else
@@ -219,7 +220,7 @@ void BST::deleteNode(BST::BinNode *node, BST::BinNode *parentNode, BST::delete_m
         }
     }
     delete node;
-    this->postDelete(parentNode);
+    this->postDelete(data, parentNode);
 }
 
 BST::BinNode * BST::smallest(BinNode *rootNode, BinNode *& parentNode, int &status) {
@@ -249,7 +250,7 @@ BST::BinNode * BST::largest(BinNode *rootNode) {
 
 void BST::postInsert(BST::BinNode *node, BST::BinNode *parentNode) {}
 
-void BST::postDelete(BST::BinNode *parentNode) {}
+void BST::postDelete(int data, BST::BinNode *parentNode) {}
 
 BST::BinNode* BST::initNode() {
     return new BinNode();

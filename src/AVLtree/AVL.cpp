@@ -36,40 +36,78 @@ void AVL::postInsert(BinNode *node, BinNode *parentNode) {
         this->balance(avlNode);
 }
 
-void AVL::postDelete(BinNode *parentNode) {
-    this->calcHeight((AVLNode*) this->myRoot);
-    if (!parentNode) return;
+//void AVL::postDelete(BinNode *parentNode) {
+//    this->calcHeight((AVLNode*) this->myRoot);
+//    if (!parentNode) return;
+//
+//    AVLNode *parentAVLNode = (AVLNode*) parentNode;
+//    while (parentAVLNode && IS_BALANCED(parentAVLNode)) {
+//        switch (BALANCE_TYPE(parentAVLNode)) {
+//            case BALANCED:
+//                return;
+//            case RIGHT_HEAVY:
+//                parentAVLNode = (AVLNode*) parentAVLNode->right;
+//                break;
+//            case LEFT_HEAVY:
+//                parentAVLNode = (AVLNode*) parentAVLNode->left;
+//                break;
+//        }
+//    }
+//
+//    if (!parentAVLNode) return;
+//    switch (BALANCE_TYPE(parentAVLNode)) {
+//        case BALANCED:
+//        case LEFT_HEAVY:
+//            parentAVLNode = (AVLNode*) (parentAVLNode->left);
+//            break;
+//        case RIGHT_HEAVY:
+//            parentAVLNode = (AVLNode*) (parentAVLNode->right);
+//            break;
+//    }
+//    if (parentAVLNode->left)
+//        parentAVLNode = (AVLNode*) parentAVLNode->left;
+//    else if (parentAVLNode->right)
+//        parentAVLNode = (AVLNode*) parentAVLNode->right;
+//
+//    this->balance(parentAVLNode);
+//}
 
-    AVLNode *parentAVLNode = (AVLNode*) parentNode;
-    while (parentAVLNode && IS_BALANCED(parentAVLNode)) {
-        switch (BALANCE_TYPE(parentAVLNode)) {
+void AVL::postDelete(int deletedData, BST::BinNode *parentNode) {
+    this->calcHeight((AVLNode*) this->myRoot);
+    if (!parentNode)
+        return;
+    AVLNode *unbalanced;
+    while ( (unbalanced = this->findUnbalanced((AVLNode*) this->myRoot)) ) {
+        switch (BALANCE_TYPE(unbalanced)) {
             case BALANCED:
-                return;
-            case RIGHT_HEAVY:
-                parentAVLNode = (AVLNode*) parentAVLNode->right;
-                break;
             case LEFT_HEAVY:
-                parentAVLNode = (AVLNode*) parentAVLNode->left;
+                unbalanced = (AVLNode *) unbalanced->left;
+                break;
+            case RIGHT_HEAVY:
+                unbalanced = (AVLNode *) unbalanced->right;
                 break;
         }
-    }
+        if (unbalanced->left)
+            unbalanced = (AVLNode *) unbalanced->left;
+        else if (unbalanced->right)
+            unbalanced = (AVLNode *) unbalanced->right;
 
-    if (!parentAVLNode) return;
-    switch (BALANCE_TYPE(parentAVLNode)) {
-        case BALANCED:
-        case LEFT_HEAVY:
-            parentAVLNode = (AVLNode*) (parentAVLNode->left);
-            break;
-        case RIGHT_HEAVY:
-            parentAVLNode = (AVLNode*) (parentAVLNode->right);
-            break;
+        this->balance(unbalanced);
     }
-    if (parentAVLNode->left)
-        parentAVLNode = (AVLNode*) parentAVLNode->left;
-    else if (parentAVLNode->right)
-        parentAVLNode = (AVLNode*) parentAVLNode->right;
+}
 
-    this->balance(parentAVLNode);
+AVL::AVLNode* AVL::findUnbalanced(AVL::AVLNode *rootNode) {
+    if (!rootNode || !IS_BALANCED(rootNode))
+        return rootNode;
+    AVLNode *unbalanced;
+//    balance_type balanceType = BALANCE_TYPE(rootNode);
+//    if (balanceType==BALANCED || balanceType==LEFT_HEAVY)
+    unbalanced = findUnbalanced((AVLNode*) rootNode->left);
+    if (unbalanced)
+        return unbalanced;
+//    if (balanceType==BALANCED || balanceType==RIGHT_HEAVY)
+    unbalanced = findUnbalanced((AVLNode*) rootNode->right);
+    return unbalanced;
 }
 
 AVL::BinNode* AVL::initNode() {
@@ -155,6 +193,7 @@ void AVL::balance(AVL::AVLNode *node) {
                     rotateNode = parent;
                 }
             }
+            cout << "Rotating [" << rotateNode->data << "]";
             this->rotate(rotateNode, rotationType);
             this->calcHeight((AVLNode *) this->myRoot);
             return;

@@ -52,7 +52,7 @@ class BST
 
     /***** Protected Function Members *****/
     virtual void postInsert(BinNode *node, BinNode *parentNode);
-    virtual void postDelete(BinNode *parentNode);
+    virtual void postDelete(int deletedData, BinNode *parentNode);
     virtual BinNode* initNode();
     virtual BinNode* initNode(int data);
     BinNode *smallest(BinNode *rootNode, BinNode *& parentNode, int &status);
