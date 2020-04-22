@@ -6,7 +6,14 @@ Build Steps (One-time only):
 
 Execution Steps:
 1. Run the executable in your shell as below:
-    ./bst   ... For BST
-	OR
-    ./avl   ... For AVL Tree
+
+	For BST:
+	`
+	./bst
+	` , OR,
+
+	For AVL Tree:
+	`
+	./avl
+	`
 2. Follow the prompts and enter appropriate input as requested by the program
